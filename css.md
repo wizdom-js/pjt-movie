@@ -38,6 +38,14 @@ https://644.kr/#mission - 들어올 때
 
 
 
+---
+
+## 도움 될만한 사이트
+
+https://www.pinterest.co.kr/ - 이미지
+
+
+
 tell us what you want
 
 tu wyw 투와이
