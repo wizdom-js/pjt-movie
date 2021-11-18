@@ -5,7 +5,7 @@
       <router-link :to="{ name: 'Board' }">Board</router-link> |
       <router-link :to="{ name: 'Recommend' }">Recommend</router-link> |
       <div v-if="isLogin">
-        <router-link :to="{ name: 'User' }">User</router-link> |
+        <router-link :to="{ name: 'Profile', params: { userName: this.userName } }">User</router-link> |
         <router-link to="#" @click.native="logout">Logout</router-link>
       </div>
       <div v-else>
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 
 export default {
   name: 'App',
@@ -41,6 +42,9 @@ export default {
     if (token) {
       this.isLogin = true
     }
+  },
+  computed: {
+    ...mapState(['userName'])
   }
 }
 </script>

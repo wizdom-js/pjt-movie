@@ -12,42 +12,25 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import { mapActions } from 'vuex'
+
 export default {
   name: 'PostList',
-  data() {
-    return {
-      posts: null,
-    }
-  },
   computed: {
-    getPostItem() {
-      return this.$store.state.posts
-    }
+    // 전체 게시글 가져오기 
+    ...mapState(['posts'])
   },
   methods: {
+    // 클릭한 게시글로 이동 
     postDetail(id) {
       this.$router.push({ name: 'PostDetail', params: { postNum: id } })
     },
-    setToken: function () {
-      const token = localStorage.getItem('jwt')
-      const config = {
-        Authorization: `JWT ${token}`
-      }
-      return config
-    },
-    getPosts() {
-      axios({
-        method: 'get',
-        url: `${SERVER_URL}/community/`,
-        headers: this.setToken()
-      })
-        .then(res => {
-          this.posts = res.data
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    }
+    // 전체 게시글 서버에서 불러오기 
+    ...mapActions(['getPosts'])
+  },
+  created() {
+    this.getPosts()
   }
 }
 </script>

@@ -8,7 +8,7 @@
     <v-textarea v-model="post.content"
       color="success"
     ></v-textarea>
-    <button @click="uploadPost">done</button>
+    <button @click="isUpdate ? updatePost() : createPost()">done</button>
   </div>
 </template>
 
@@ -24,23 +24,56 @@ export default {
       post: {
         title: '',
         content: '',
-        id: null,
-      }
+      },
+      isUpdate: this.$route.params.postId > 0 ? true : false,
     }
   },
   computed: {
-    ...mapState(['posts'])
+    ...mapState([
+      'config'
+    ])
   },
-  methods: {
-    uploadPost() {
-      this.post.id = this.posts.length -1
+  created() {
+    if (this.$route.params.postId > 0) {
       this.$axios({
-        method: 'post',
-        url: `${SERVER_URL}/community/create/`,
-        data: this.post
+        method: 'get',
+        url: `${SERVER_URL}/community/${this.$route.params.postId}/`, 
       })
         .then(res => {
-          this.$router.push({ name: 'PostDetail', params: { postNum: res.pk } })
+          this.post.title = res.data.title
+          this.post.content = res.data.content
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+  },
+  methods: {
+    // 게시글 생성 
+    createPost() {
+      this.$axios({
+        method: 'post',
+        url: `${SERVER_URL}/community/`,
+        data: this.post,
+        headers: this.config
+      })
+        .then(res => {
+          this.$router.push({ name: 'PostDetail', params: { postNum: res.data.id } })  
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    // 게시글 수정
+    updatePost() {
+      this.$axios({
+        method: 'put',
+        url: `${SERVER_URL}/community/${this.$route.params.postId}/`, 
+        data: this.post,
+        headers: this.config
+      })
+        .then(res => {
+          this.$router.push({ name: 'PostDetail', params: { postNum: res.data.id } })  
         })
         .catch(err => {
           console.log(err)

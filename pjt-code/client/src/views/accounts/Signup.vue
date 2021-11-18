@@ -85,7 +85,6 @@ export default {
             })
         })
         .catch(err => {
-          console.log(this.credentials)
           console.log(err)
         })
     }

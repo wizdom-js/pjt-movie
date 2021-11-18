@@ -35,21 +35,23 @@ export default {
     }
   },
   methods: {
-    login: function () {
+    login() {
       this.$axios({
         method: 'post',
         url: `${SERVER_URL}/accounts/api-token-auth/`,
         data: this.credentials,
       })
         .then(res => {
-          localStorage.setItem('jwt', res.data.token)
+          localStorage.setItem('jwt', res.data.token) // jwt 토큰 localStorage에 저장 
           this.$emit('login')
-          this.$router.push({ name: 'TodoList' })
+          this.$store.dispatch('setUserName', this.credentials.username)  // 로그인한 유저 아이디 저장 
+          this.$store.dispatch('setToken')  // 토큰 state에 저장 
+          this.$router.push({ name: 'Home' })
         })
         .catch(err => {
           console.log(err)
         })
-    }
+    },
   }
 }
 </script>

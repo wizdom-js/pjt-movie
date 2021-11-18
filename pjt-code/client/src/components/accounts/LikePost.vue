@@ -1,10 +1,12 @@
 <template>
-  <div>user</div>
+  <div>
+    like post
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'User',
+  name: 'LikePost',
 }
 </script>
 
