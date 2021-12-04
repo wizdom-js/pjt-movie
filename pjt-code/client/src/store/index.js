@@ -1,19 +1,17 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
-const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default new Vuex.Store({
   plugins: [createPersistedState()],
   state: {
-    posts: [],
-    post: null,
     userName: null,
+    profileImg: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQU00i-_pNcxxQ69OH2c8MyVuHS0Q4GdMDR7w&usqp=CAU',
     token: null,
     config: null,
+    isAdmin: null,
   },
   mutations: {
     SET_USERNAME(state, userName) {
@@ -21,16 +19,26 @@ export default new Vuex.Store({
     },
     DELETE_USERNAME(state) {
       state.userName = null
-    },
-    GET_POSTS(state, posts) {
-      state.posts = posts
+      state.profileImg = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQU00i-_pNcxxQ69OH2c8MyVuHS0Q4GdMDR7w&usqp=CAU'
+      state.token = null
+      state.config = null
+      state.isAdmin = null
     },
     SET_TOKEN(state, token) {
       state.token = token
       state.config = {
         Authorization: `JWT ${token}` 
       }
+    },
+    SET_USER_PROFILE_IMG(state, profileImg) {
+      if (profileImg != null) {
+        state.profileImg = `http://127.0.0.1:8000${profileImg}`
+      }
+    },
+    SET_IS_ADMIN(state, isAdmin) {
+      state.isAdmin = isAdmin
     }
+
   },
   actions: {
     // 유저 네임 저장 
@@ -44,20 +52,14 @@ export default new Vuex.Store({
     setToken({ commit }) {
       commit('SET_TOKEN', localStorage.getItem('jwt'))
     },
-    // 자유게시판 전체 글 가져오기 
-    getPosts({ commit }) {
-      axios({
-        method: 'get',
-        url: `${SERVER_URL}/community/`,
-        // headers: this.state.userInfo.config
-      })
-        .then(res => {
-          commit('GET_POSTS', res.data)
-        })
-        .catch(err => {
-          console.log(err)
-        })
+    // 프로필 이미지 저장
+    setUserProfileImg({ commit }, profileImg) {
+      commit('SET_USER_PROFILE_IMG', profileImg)
     },
+    // 관리자 여부 저장
+    setIsAdmin({ commit }, isAdmin) {
+      commit('SET_IS_ADMIN', isAdmin)
+    }
   },
   modules: {
   }

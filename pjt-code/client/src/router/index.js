@@ -2,17 +2,30 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Home from '@/views/Home'
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+    return originalPush.call(this, location).catch(() => {
+        return window.location.reload()
+    })
+};
 
+// 자유게시판
 import Board from '@/views/board/Board'
 import PostDetail from '@/views/board/PostDetail'
 import PostCreate from '@/views/board/PostCreate'
 
-import Recommend from '@/views/Recommend'
-
+// 유저
 import Profile from '@/views/accounts/Profile'
 import Signup from '@/views/accounts/Signup'
 import Login from '@/views/accounts/Login'
+import ChangeProfile from '@/views/accounts/ChangeProfile'
+import DeleteUser from '@/views/accounts/DeleteUser'
 
+// 영화 
+import MovieDetail from '@/views/movie/MovieDetail'
+import MovieRecommend from '@/views/movie/MovieRecommend'
+import IsAdult from '@/views/movie/IsAdult'
+import SearchMovie from '@/views/movie/SearchMovie'
 
 Vue.use(VueRouter)
 
@@ -39,13 +52,6 @@ const routes = [
     name: 'PostCreate',
     component: PostCreate
   },
-  
-  // 상세 추천
-  {
-    path: '/recommend',
-    name: 'Recommend',
-    component: Recommend
-  },
 
   // 유저
   {
@@ -62,6 +68,43 @@ const routes = [
     path: '/profile/:userName',
     name: 'Profile',
     component: Profile
+  },
+  // 회원 정보 수정 
+  {
+    path: '/change-userinfo',
+    name: 'ChangeProfile',
+    component: ChangeProfile
+  },
+  // 회원 탈퇴
+  {
+    path: '/delete-userinfo',
+    name: 'DeleteUser',
+    component: DeleteUser
+  },
+
+  // 성인 영화
+  {
+    path: '/movie/forbidden',
+    name: 'IsAdult',
+    component: IsAdult
+  },
+  // 영화 조회 
+  {
+    path: '/movie/:movieId',
+    name: 'MovieDetail',
+    component: MovieDetail
+  },
+  // 상세 추천
+  {
+    path: '/recommend',
+    name: 'MovieRecommend',
+    component: MovieRecommend
+  },
+  // 영화 검색
+  {
+    path: '/search/:keyword',
+    name: 'SearchMovie',
+    component: SearchMovie
   },
 ]
 

@@ -1,12 +1,12 @@
 <template>
   <div>
     <comment-create :reloadComment="reloadComment"></comment-create>
-    <comment-item
-      v-for="comment in comments"
-      :key="comment.id"
-      :comment="comment"  
-      :reloadComment="reloadComment"
-    ></comment-item>
+      <comment-item
+        v-for="comment in commentList"
+        :key="comment.id"
+        :comment="comment"  
+        :reloadComment="reloadComment"
+      ></comment-item>
   </div>
 </template>
 
@@ -24,8 +24,7 @@ export default {
   },
   data() {
     return {
-      content: null,
-      comment: null,
+      commentList: this.comments
     }
   },
   props: {
@@ -34,18 +33,26 @@ export default {
     }
   },
   methods: {
+    // 댓글 다시 로드 
     reloadComment() {
       this.$axios({
         method: 'get',
-        url: `${SERVER_URL}/community/${this.$route.params.postNum}/comment/`,
+        url: `${SERVER_URL}/community/${this.$route.params.postNum}/comment_list/`,
       })
         .then(res => {
-          this.comments = res.data
+          this.commentList = res.data
         })
-        .catch(err => {
-          console.log(err)
+        .catch(() => {
+          // console.log(err)
+          this.commentList = null
         })
     },
+  },
+  watch: {
+    comments() {
+      this.commentList = this.comments
+      console.log(this.commentList)
+    }
   }
 }
 </script>

@@ -4,11 +4,14 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import axios from 'axios'
-// import _ from 'lodash'
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 
+Vue.use(BootstrapVue)
 
 new Vue({
   router,
