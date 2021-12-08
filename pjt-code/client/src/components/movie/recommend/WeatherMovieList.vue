@@ -23,8 +23,7 @@ import 'swiper/css/swiper.css'
 
 import axios from 'axios'
 
-const WEATHER_API = "c902eb9aee51998b30d90694ef0a29f7"
-// const WEATHER_API = process.env.VUE_APP_WEATHER_API
+const WEATHER_API = process.env.VUE_APP_WEATHER_API
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 const COORDS = "coords"
 
